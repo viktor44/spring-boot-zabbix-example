@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  zabbix-server-host: 1.2.3.4
+  zabbix-server-port: '10051'

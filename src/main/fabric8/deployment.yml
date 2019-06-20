@@ -1,0 +1,35 @@
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: ${project.artifactId}
+          env:
+            - name: ZBX_SERVER_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: zabbix-server-host
+            - name: ZBX_SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: zabbix-server-port
+            - name: ZBX_DEBUG_LEVEL
+              value: 4
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
